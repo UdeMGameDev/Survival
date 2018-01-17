@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+
+	// Test pour gitHub
+
+
 	CharacterController cc;
 
 	// Gets bullet reference
