@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour {
 	public float speed = 8f;
 
 	float timeBeforeShot = 0f;
+	float velocityY;
+	float gravity = -9.8f;
 
 
 
@@ -41,8 +43,17 @@ public class PlayerController : MonoBehaviour {
 		Vector3 direction = new Vector3(x, 0f, z);
 		direction.Normalize();
 
+		velocityY += Time.deltaTime * gravity;
+
+
 		// Move the player according to direction (times speed)
-		cc.Move(direction * Time.deltaTime * speed);
+		cc.Move((direction * speed * Time.deltaTime) + (Vector3.up * velocityY));
+
+		// If character grounded, set gravity to 0
+		if (cc.isGrounded)
+		{
+			velocityY = 0;
+		}
 
 		// Rotates the player with a Raycast
 		// (sends a ray from camera center to mouse, then set the forward direction of

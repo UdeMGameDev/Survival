@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour {
 
-	public Transform player;
+	Transform player;
 	NavMeshAgent agent;
 
 	// Use this for initialization
 	void Start () {
 		// Gets navhmeshageny component from enemy
 		agent = GetComponent<NavMeshAgent>();
+		player = GameObject.FindWithTag("Player").transform;
 	}
 	
 	// Update is called once per frame
