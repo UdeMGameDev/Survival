@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour {
 		// Follows the player with built-in Unity AI NavMeshAgent
 		agent.destination = player.position;
 
-		if (Vector3.Distance(player.position, transform.position) < 1f)
+		if (Vector3.Distance(player.position, transform.position) < 2f)
 		{
 			SceneManager.LoadScene("Scene1");
 		}
