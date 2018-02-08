@@ -27,12 +27,18 @@ public class Bullet : MonoBehaviour {
 	void OnTriggerEnter(Collider col)
 	{
 		// If bullet collides with enemy, destroy enemy
-		if (col.tag == "Enemy")
+		if (col.tag != "Player")
 		{
-			Destroy(col.gameObject);
-		}
+			if (col.tag == "Enemy")
+			{
+				Destroy(col.gameObject);
+			}
 
-		// Destroys bullet
-		Destroy(transform.gameObject);
+					
+
+			// Destroys bullet
+			Destroy(transform.gameObject);
+		}
 	}
+		
 }
