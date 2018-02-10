@@ -5,10 +5,13 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
 	float time = 0;
+	Rigidbody rb;
+	Collider col;
 
 	// Use this for initialization
 	void Start () {
-		
+		rb = GetComponent<Rigidbody>();
+		col = GetComponent<Collider>();
 	}
 	
 	// Update is called once per frame
@@ -29,15 +32,20 @@ public class Bullet : MonoBehaviour {
 		// If bullet collides with enemy, destroy enemy
 		if (col.tag != "Player")
 		{
+			
 			if (col.tag == "Enemy")
 			{
-				Destroy(col.gameObject);
+				//Destroy(col.gameObject);
+				col.GetComponent<Enemy>().Die();
 			}
 
 					
 
-			// Destroys bullet
-			Destroy(transform.gameObject);
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+			rb.useGravity = true;
+			this.col.isTrigger = false;
+			
 		}
 	}
 		
