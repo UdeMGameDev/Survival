@@ -9,14 +9,17 @@ public class Enemy : MonoBehaviour {
 	Transform player;
 	NavMeshAgent agent;
 	Animator anim;
-	bool dead;
-
+	Collider col;
+	public bool dead { get; set; }
+	
 	// Use this for initialization
 	void Start () {
 		// Gets navhmeshageny component from enemy
 		agent = GetComponent<NavMeshAgent>();
-		player = GameObject.FindWithTag("Player").transform;
+		col = GetComponent<Collider>();
 		anim = GetComponent<Animator>();
+
+		player = GameObject.FindWithTag("Player").transform;
 		dead = false;
 	}
 	
@@ -37,8 +40,13 @@ public class Enemy : MonoBehaviour {
 	{
 		agent.isStopped = true;
 		anim.SetBool("death", true);
+		col.isTrigger = true;
 		dead = true;
+		Destroy(this.gameObject, 20f);
+
 	}
+
+
 
 
 }

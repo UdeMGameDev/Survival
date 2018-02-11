@@ -35,18 +35,26 @@ public class Bullet : MonoBehaviour {
 			
 			if (col.tag == "Enemy")
 			{
-				//Destroy(col.gameObject);
-				col.GetComponent<Enemy>().Die();
+				if (!col.GetComponent<Enemy>().dead)
+				{
+					col.GetComponent<Enemy>().Die();
+					Stop();
+				}
+			}
+			else
+			{
+				Stop();
 			}
 
-					
-
-			rb.velocity = Vector3.zero;
-			rb.angularVelocity = Vector3.zero;
-			rb.useGravity = true;
-			this.col.isTrigger = false;
-			
 		}
+	}
+
+	void Stop()
+	{
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
+		rb.useGravity = true;
+		this.col.isTrigger = false;
 	}
 		
 }
