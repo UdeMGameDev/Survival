@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour {
 
 		if (Vector3.Distance(player.position, transform.position) < 2f && !dead)
 		{
-			SceneManager.LoadScene("Scene1");
+			//SceneManager.LoadScene("Scene1");
 		}
 
 	}

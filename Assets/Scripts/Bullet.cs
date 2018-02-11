@@ -8,10 +8,20 @@ public class Bullet : MonoBehaviour {
 	Rigidbody rb;
 	Collider col;
 
+	public enum State
+	{
+		floor,
+		air,
+		picked
+	}
+	public State state;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		col = GetComponent<Collider>();
+
+		state = State.floor;
 	}
 	
 	// Update is called once per frame
@@ -21,31 +31,49 @@ public class Bullet : MonoBehaviour {
 		time += Time.deltaTime;
 
 		// if bullet ctreated 5 sec. ago, destroy it
+		/*
 		if (time >= 5f)
 		{
 			Destroy(transform.gameObject);
 		}
+		*/
 	}
 
 	void OnTriggerEnter(Collider col)
 	{
-		// If bullet collides with enemy, destroy enemy
-		if (col.tag != "Player")
+		if (state == State.air)
 		{
-			
-			if (col.tag == "Enemy")
+			// If bullet collides with enemy, destroy enemy
+			if (col.tag != "Player" && col.tag != "Ground" && col.tag != "Item")
 			{
-				if (!col.GetComponent<Enemy>().dead)
+				if (col.tag == "Enemy")
 				{
-					col.GetComponent<Enemy>().Die();
+					if (!col.GetComponent<Enemy>().dead)
+					{
+						col.GetComponent<Enemy>().Die();
+						Stop();
+					}
+				}
+				else
+				{
 					Stop();
 				}
-			}
-			else
-			{
-				Stop();
-			}
 
+			}
+		}
+
+		else if (state == State.floor)
+		{
+			if (col.tag == "Player")
+			{
+				if (col.GetComponent<PlayerController>().bulletObject == null)
+				{
+					PlayerController pc = col.GetComponent<PlayerController>();
+					pickUp(pc);
+				}
+				
+
+			}
 		}
 	}
 
@@ -55,6 +83,27 @@ public class Bullet : MonoBehaviour {
 		rb.angularVelocity = Vector3.zero;
 		rb.useGravity = true;
 		this.col.isTrigger = false;
+		state = State.floor;
+	}
+
+	public void pickUp(PlayerController pc)
+	{
+		transform.position = pc.bulletStart.position;
+		pc.bulletObject = this.gameObject;
+		pc.hasItem = true;
+		rb.constraints = RigidbodyConstraints.FreezeAll;
+		rb.useGravity = false;
+		transform.SetParent(pc.transform);
+	}
+
+	public void Fire(Vector3 direction)
+	{
+		transform.SetParent(null);
+		rb.AddForce(direction * 2000f);
+		state = Bullet.State.air;
+		rb.constraints = RigidbodyConstraints.None;
+		rb.useGravity = true;
+		
 	}
 		
 }

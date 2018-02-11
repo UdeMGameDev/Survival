@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour {
 	float velocityY;
 	float gravity = -9.8f;
 
+	public bool hasItem;
+
 
 
 	// Use this for initialization
@@ -29,6 +31,8 @@ public class PlayerController : MonoBehaviour {
 	{
 		// Gets the character controller component
 		cc = GetComponent<CharacterController>();
+		hasItem = false;
+		bulletObject = null;
 	}
 	
 	// Update is called once per frame
@@ -61,7 +65,7 @@ public class PlayerController : MonoBehaviour {
 		RaycastHit lookHit;
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 
-		if (Physics.Raycast (ray, out lookHit, 1000f))
+		if (Physics.Raycast (ray, out lookHit, 5000f))
 		{
 			Vector3 directionRaw = lookHit.point - transform.position;
 			transform.forward = new Vector3 (directionRaw.x, 0f, directionRaw.z);
@@ -69,14 +73,13 @@ public class PlayerController : MonoBehaviour {
 		
 
 		// If player presses space and can shoot
-		if (Input.GetKeyDown(KeyCode.Space) && timeBeforeShot <= 0f)
+		if (Input.GetKeyDown(KeyCode.Space) && timeBeforeShot <= 0f && bulletObject != null)
 		{
 			timeBeforeShot = fireRate;
 
 			// Instantiate bullet and shoots it
-			GameObject bullet = Instantiate(bulletObject, bulletStart);
-			bullet.transform.SetParent(null);
-			bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 1000f);
+			bulletObject.GetComponent<Bullet>().Fire(transform.forward);
+			bulletObject = null;
 		}
 
 		timeBeforeShot -= Time.deltaTime;
