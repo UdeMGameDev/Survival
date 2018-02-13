@@ -44,7 +44,7 @@ public class Bullet : MonoBehaviour {
 		if (state == State.air)
 		{
 			// If bullet collides with enemy, destroy enemy
-			if (col.tag != "Player" && col.tag != "Ground" && col.tag != "Item")
+			if (col.tag != "Player" && col.tag != "Ground")
 			{
 				if (col.tag == "Enemy")
 				{
